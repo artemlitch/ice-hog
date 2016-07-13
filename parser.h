@@ -14,6 +14,9 @@ public:
     string consume_while(function<bool()> cond); //TODO: template?
     void consume_whitespace();
     string parse_tag_name();
+    string parse_attr_value();
+    pair<string, string> parse_attribute();
+    AttrMap parse_attributes();
     Node* parse_node();
     Node* parse_text_node();
     Node* parse_elem_node();

@@ -57,6 +57,28 @@ string Parser::parse_tag_name() {
     }); 
 }
 
+string Parser::parse_attr_value() {
+    char open_quote = this->consume_char();
+    assert(open_quote == '"' || open_quote == 39);
+    string value = this->consume_while([&](){ return this->next_char() != open_quote;});
+    assert(this->consume_char() == open_quote);
+    return value;
+}
+pair<string, string> Parser::parse_attribute() {
+    string name = this->parse_tag_name();
+    assert(this->consume_char() == '=');
+    string value = this->parse_attr_value();
+    return pair<string, string>(name, value);
+}
+AttrMap Parser::parse_attributes() {
+    AttrMap attributes;
+    while(this->next_char() != '>') {
+        this->consume_whitespace();
+        attributes.insert(this->parse_attribute());
+    }
+    return attributes;
+}
+
 Node* Parser::parse_node() {
     if(this->next_char() == '<') {
         return this->parse_elem_node();
@@ -77,6 +99,7 @@ Node* Parser::parse_elem_node() {
     ElemNode node;
     assert(this->consume_char() == '<');
     string tag_name = this->parse_tag_name();
+    AttrMap attributes = this->parse_attributes();
     assert(this->consume_char() == '>');
     
     //do the children here
@@ -87,6 +110,7 @@ Node* Parser::parse_elem_node() {
     assert(this->parse_tag_name() == tag_name);
     assert(this->consume_char() == '>');
     node.tag_name = tag_name;
+    node.attributes = attributes;
     return node.clone();
 }
 
