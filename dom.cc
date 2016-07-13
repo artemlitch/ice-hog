@@ -1,13 +1,19 @@
 #include "dom.h"
+#include <iostream>
 using namespace std;
 typedef map<string, string> AttrMap;
 
-void Node::addChild(Node child) {
-    this->children.push_back(child); 
-};
-
-
-
-void removeChild(Node child) {
+void TextNode::prettyPrint() {
+    cout << this->data << " ";
+    for(Node* child : children) {
+        child->prettyPrint();
+    }
 }
 
+void ElemNode::prettyPrint() {
+    cout << "<" << this->tag_name << ">" << endl;
+    for(Node* child : children) {
+        child->prettyPrint();
+    }
+    cout <<endl<< "</" << this->tag_name << ">" << endl;
+}
