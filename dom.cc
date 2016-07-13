@@ -12,10 +12,12 @@ void TextNode::prettyPrint() {
 
 void ElemNode::prettyPrint() {
     cout << "<" << this->tag_name << " ";
-    for(auto attr = this->attributes.begin(); attr != this->attributes.end(); attr++) {
-        cout << attr->first << "=" << attr->second << " ";
+
+    for(auto attr : attributes) {
+        cout << attr.first << "=" << attr.second << " ";
     }
     cout << ">" << endl;
+
     for(Node* child : children) {
         child->prettyPrint();
     }

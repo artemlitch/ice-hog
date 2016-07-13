@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 int main() {
     ElemNode head;
     head.tag_name = "Head"; 
